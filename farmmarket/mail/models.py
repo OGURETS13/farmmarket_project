@@ -1,4 +1,3 @@
-from typing import Any
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
@@ -25,6 +24,13 @@ class Product(models.Model):
         null=False,
         blank=False
     )
+    price = models.FloatField()
+    image = models.ImageField(
+        null=True,
+        blank=True,
+        max_length=100,
+        upload_to='media/images'
+    )
 
     def __str__(self):
         return self.name
@@ -43,6 +49,9 @@ class OrderStatus(models.Model):
         choices=STATUS_CHOICES,
         unique=True
     )
+
+    def __str__(self) -> str:
+        return self.status
 
 
 class Order(models.Model):
@@ -76,7 +85,7 @@ class Order(models.Model):
     )
 
     def __str__(self):
-        return self.pk
+        return str(self.pk)
 
 
 class OrderItem(models.Model):
@@ -91,4 +100,6 @@ class OrderItem(models.Model):
         on_delete=models.CASCADE
     )
     quantity = models.FloatField()
-###
+
+    def __str__(self) -> str:
+        return f'order #{str(self.order.pk)}, {str(self.product.name)}',

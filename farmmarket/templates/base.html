@@ -8,13 +8,6 @@
     <header>
         <h1>{% block heading %}My Site{% endblock %}</h1>
     </header>
-    <nav>
-        <ul>
-            <li><a href="{% url 'home' %}">Home</a></li>
-            <li><a href="{% url 'login' %}">Login</a></li>
-            <li><a href="{% url 'register' %}">Register</a></li>
-        </ul>
-    </nav>
     <main>
         {% block content %}
         {% endblock %}
