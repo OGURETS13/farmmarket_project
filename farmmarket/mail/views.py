@@ -1,7 +1,12 @@
 import os
 
 from django.contrib.auth import get_user_model
-from django.shortcuts import redirect, render, get_object_or_404, get_list_or_404
+from django.shortcuts import (
+    redirect,
+    render,
+    get_object_or_404,
+    get_list_or_404
+)
 
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail, Email, To, Content
@@ -15,7 +20,7 @@ def index(request):
     return render(request, 'index.html')
 
 
-def function1(request):
+def order_paid(request):
     order = get_object_or_404(Order, pk=2)
     client = order.client
     order_items = get_list_or_404(OrderItem, order=order)
@@ -23,19 +28,17 @@ def function1(request):
     base_url = request.scheme + '://' + request.get_host()
     for item in order_items:
         image_url = base_url + item.product.image.url
-        items.append(
-            {
-                "name": item.product.name,
-                "qty": item.quantity,
-                "hst": '15%',
-                "price": item.product.price * item.quantity,
-                "image": image_url
-            }
-        )
+        items.append({
+            "name": item.product.name,
+            "qty": item.quantity,
+            "hst": '15%',
+            "price": item.product.price * item.quantity,
+            "image": image_url
+        })
     print(item.product.image.url)
     message = Mail(
         from_email='frantsph@gmail.com',
-        to_emails='ogurets13@gmail.com',
+        to_emails='Hdorkina@gmail.com',
     )
 
     message.template_id = 'd-9efc76d1199c443385e90c96825da47b'
