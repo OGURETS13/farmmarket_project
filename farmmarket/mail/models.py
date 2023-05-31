@@ -47,7 +47,7 @@ class OrderStatus(models.Model):
     status = models.CharField(
         max_length=20,
         choices=STATUS_CHOICES,
-        unique=True
+        unique=True,
     )
 
     def __str__(self) -> str:
@@ -79,6 +79,7 @@ class Order(models.Model):
     )
     status = models.ForeignKey(
         OrderStatus,
+        to_field='status',
         related_name='orders',
         on_delete=models.SET_DEFAULT,
         default=0
@@ -102,4 +103,4 @@ class OrderItem(models.Model):
     quantity = models.FloatField()
 
     def __str__(self) -> str:
-        return f'order #{str(self.order.pk)}, {str(self.product.name)}',
+        return f'order #{str(self.order.pk)}, {str(self.product.name)}'

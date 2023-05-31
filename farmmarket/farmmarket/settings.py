@@ -121,11 +121,11 @@ STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Email backend settings
-EMAIL_HOST = 'smtp.sendgrid.net'
-EMAIL_PORT = '25'
-EMAIL_HOST_USER = 'apikey'
-EMAIL_HOST_PASSWORD = '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'
+# # Email backend settings
+# EMAIL_HOST = 'smtp.sendgrid.net'
+# EMAIL_PORT = '25'
+# EMAIL_HOST_USER = 'apikey'
+# EMAIL_HOST_PASSWORD = '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'
 
 MEDIA_URL = ''
 MEDIA_ROOT = os.path.join(BASE_DIR,)

@@ -21,7 +21,7 @@ def index(request):
 
 
 def order_paid(request):
-    order = get_object_or_404(Order, pk=2)
+    order = Order.objects.last()
     client = order.client
     order_items = get_list_or_404(OrderItem, order=order)
     items = []
@@ -35,10 +35,10 @@ def order_paid(request):
             "price": item.product.price * item.quantity,
             "image": image_url
         })
-    print(item.product.image.url)
+
     message = Mail(
         from_email='frantsph@gmail.com',
-        to_emails='Hdorkina@gmail.com',
+        to_emails='ogurets13@gmail.com',
     )
 
     message.template_id = 'd-9efc76d1199c443385e90c96825da47b'
@@ -52,12 +52,18 @@ def order_paid(request):
         "seller": order.farmer.username
     }
 
+    print(item.product.image.url)
+    print(items)
+    print(message)
+
     try:
         sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
+        print('sg')
         response = sg.send(message)
         print(response.status_code)
         print(response.body)
         print(response.headers)
     except Exception as e:
         print(e)
+
     return redirect('mail:index')
