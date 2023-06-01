@@ -24,8 +24,9 @@ def order_paid(request):
     order = Order.objects.last()
     client = order.client
     order_items = get_list_or_404(OrderItem, order=order)
-    items = []
     base_url = request.scheme + '://' + request.get_host()
+
+    items = []
     for item in order_items:
         image_url = base_url + item.product.image.url
         items.append({
@@ -35,6 +36,9 @@ def order_paid(request):
             "price": item.product.price * item.quantity,
             "image": image_url
         })
+
+    order_status = order.status
+    order_status = 'registered'
 
     message = Mail(
         from_email='frantsph@gmail.com',
@@ -49,16 +53,12 @@ def order_paid(request):
         "items": items,
         "shipping_address": order.address,
         "order_date": str(order.date.strftime('%Y-%m-%d %H:%M:%S')),
-        "seller": order.farmer.username
+        "seller": order.farmer.username,
+        "order_status": order_status
     }
-
-    print(item.product.image.url)
-    print(items)
-    print(message)
 
     try:
         sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
-        print('sg')
         response = sg.send(message)
         print(response.status_code)
         print(response.body)
