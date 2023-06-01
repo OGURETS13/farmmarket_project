@@ -36,24 +36,6 @@ class Product(models.Model):
         return self.name
 
 
-class OrderStatus(models.Model):
-    STATUS_CHOICES = [
-        ('new', 'New'),
-        ('registered', 'Registered'),
-        ('accepted', 'Accepted'),
-        ('delivered', 'Delivered'),
-        ('closed', 'Closed')
-    ]
-    status = models.CharField(
-        max_length=20,
-        choices=STATUS_CHOICES,
-        unique=True,
-    )
-
-    def __str__(self) -> str:
-        return self.status
-
-
 class Order(models.Model):
     client = models.ForeignKey(
         User,
@@ -77,12 +59,16 @@ class Order(models.Model):
         null=False,
         blank=False
     )
-    status = models.ForeignKey(
-        OrderStatus,
-        to_field='status',
-        related_name='orders',
-        on_delete=models.SET_DEFAULT,
-        default=0
+    STATUS_CHOICES = [
+        ('new', 'New'),
+        ('registered', 'Registered'),
+        ('accepted', 'Accepted'),
+        ('delivered', 'Delivered'),
+        ('closed', 'Closed')
+    ]
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
     )
 
     def __str__(self):

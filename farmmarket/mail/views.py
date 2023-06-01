@@ -37,8 +37,8 @@ def order_paid(request):
             "image": image_url
         })
 
-    order_status = order.status
-    order_status = 'registered'
+    order.status = 'registered'
+    order.save()
 
     message = Mail(
         from_email='frantsph@gmail.com',
@@ -54,7 +54,7 @@ def order_paid(request):
         "shipping_address": order.address,
         "order_date": str(order.date.strftime('%Y-%m-%d %H:%M:%S')),
         "seller": order.farmer.username,
-        "order_status": order_status
+        "order_status": order.status
     }
 
     try:
