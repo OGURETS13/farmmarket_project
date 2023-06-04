@@ -20,6 +20,34 @@ def index(request):
     return render(request, 'index.html')
 
 
+def registration_email(request):
+    user = get_object_or_404(User, username='client1')
+    message = Mail(
+        from_email='frantsph@gmail.com',
+        # to_emails=user.email,
+        # to_emails='Hdorkina@gmail.com',
+        to_emails='ogurets13@gmail.com',
+    )
+
+    message.template_id = 'd-f07578945bfb4faab0f1b1dfa85c0376'
+
+    message.dynamic_template_data = {
+        "subject": "Confirm your registration",
+        "first_name": user.first_name,
+    }
+
+    try:
+        sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
+        response = sg.send(message)
+        print(response.status_code)
+        print(response.body)
+        print(response.headers)
+    except Exception as e:
+        print(e)
+
+    return redirect('mail:index')
+
+
 def order_paid(request):
     order = Order.objects.last()
     client = order.client
